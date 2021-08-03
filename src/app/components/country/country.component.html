@@ -1,0 +1,160 @@
+
+<!--Country table -->
+<div class="container" id="main-container" *ngIf="countries">
+  <div class="border">
+    <button onClick="$('#addCountryModal').modal()" class="btn btn-success">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      Ajouter un pays
+    </button>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>iso2</th>
+      <th>iso3</th>
+      <th>country code</th>
+      <th>country name</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let country of countries">
+      <td><span>{{country.country_id}}</span></td>
+      <td><span>{{country.iso2}}</span></td>
+      <td><span>{{country.iso3}}</span></td>
+      <td><span>{{country.country_code}}</span></td>
+      <td><span>{{country.country_name}}</span></td>
+      <td>
+        <div>
+          <button onClick="$('#updateCountryModal').modal()" (click)="getCountryClicked(country)" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateCountryModal">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+          </button>
+          <button onClick="$('#deleteCountryModal').modal()" (click)="getCountryClicked(country)" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCountryModal">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true" ></span> Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--add country Modal -->
+<div class="modal fade" id="addCountryModal" tabindex="-1" role="dialog" aria-labelledby="addCountryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCountryModalLabel">Add Country</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="addCountry(addForm)">
+          <div class="form-group">
+            <label for="iso2">ISO2</label>
+            <input type="text" ngModel name="iso2"
+                   class="form-control" id="iso2" placeholder="iso2" required>
+          </div>
+          <div class="form-group">
+            <label for="iso3">ISO3</label>
+            <input type="text" ngModel name="iso3"
+                   class="form-control" id="iso3" placeholder="iso3" required>
+          </div>
+          <div class="form-group">
+            <label for="countryCode">Country Code</label>
+            <input type="text" ngModel name="country_code"
+                   class="form-control" id="countryCode" placeholder="country code" required>
+          </div>
+          <div class="form-group">
+            <label for="countryName">Country name</label>
+            <input type="text" id="countryName"
+                   class="form-control" ngModel name="country_name" placeholder="country name" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-country-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--edit country Modal -->
+<div class="modal fade" id="updateCountryModal" tabindex="-1" role="dialog" aria-labelledby="updateCountryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateCountryModalLabel">Edit Country {{editCountry?.country_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm" >
+          <input type="hidden" ngModel="{{editCountry?.country_id}}" name="country_id" class="form-control" id="id">
+          <div class="form-group">
+            <label for="Editiso2">ISO2</label>
+            <input type="text" ngModel="{{editCountry?.iso2}}" name="iso2"
+                   class="form-control" id="Editiso2" placeholder="iso2" required>
+          </div>
+          <div class="form-group">
+            <label for="Editiso3">ISO3</label>
+            <input type="text" ngModel="{{editCountry?.iso3}}" name="iso3"
+                   class="form-control" id="Editiso3" placeholder="iso3" required>
+          </div>
+          <div class="form-group">
+            <label for="EditcountryCode">Country Code</label>
+            <input type="text" ngModel="{{editCountry?.country_code}}" name="country_code"
+                   class="form-control" id="EditcountryCode" placeholder="country code" required>
+          </div>
+          <div class="form-group">
+            <label for="EditcountryName">Country name</label>
+            <input type="text" ngModel="{{editCountry?.country_name}}" id="EditcountryName"
+                   class="form-control" name="country_name" placeholder="country name" required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button"  id="update-country-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button (click)="updateCountry(editForm.value)" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--delete country Modal -->
+<div class="modal fade" id="deleteCountryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCountryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCountryModalLabel">Delete Country {{delCountry?.country_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete country {{delCountry?.country_name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  id="delete-country-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deleteCountry(delCountry?.country_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no country -->
+<div *ngIf="countries?.length== 0" class=""col-lg-12 col-md-12 col-xl-12>
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Countries !</h4>
+    <p>No Countries were found.</p>
+  </div>
+</div>
+
+

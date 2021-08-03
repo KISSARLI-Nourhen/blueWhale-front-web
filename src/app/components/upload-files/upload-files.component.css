@@ -1,0 +1,64 @@
+
+h1{
+  text-align : center;
+  padding-top: 30px;
+}
+
+hr{
+  margin-right: 200px;
+   margin-left: 200px;
+}
+
+.container{
+  /*width: 100%;*/
+  /*padding-right: 15px;*/
+ /* padding-left: 15px;*/
+  padding-top: 30px;
+  /*margin-right: auto;*/
+  /*margin-left: auto;*/
+}
+
+.selectFile{
+  margin: auto;
+  padding: 30px;
+  text-align: center;
+}
+
+.selectSource{
+  margin: auto;
+  text-align: center;
+}
+
+.selectSource button{
+  /*margin-left: 56px*/
+}
+
+.selectSource select{
+  height: 35px;
+  width: 295px;
+  border-radius: 5px;
+  border-color: rgb(198, 197, 197);
+  font-size: 13px;
+}
+
+.list-group-item{
+  font-size: 13px;
+}
+
+#message {
+  //text-align: center;
+  font-size: 15px;
+}
+
+#tabRefused{
+  table-layout: auto;
+  width: 100%;
+}
+
+.card-header {
+  font-size: 17px;
+}
+
+th {
+  background-color: rgb(252, 234, 233);
+}

@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <ul class="navbar navbar-nav">
+      <button (click)="country.getCountries()" class="btn btn-outline-info">Country</button>
+      <button class="btn btn-outline-info">Product</button>
+      <button class="btn btn-outline-info">Source</button>
+      <button class="btn btn-outline-info">Variety</button>
+
+  </ul>
+  <ul class="navbar navbar-nav ml-auto">
+    <div>
+      <form>
+        <div class="form-group">
+          <input type="search" (ngModelChange)="country.onSearchCountry(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </ul>
+</nav>
+
+<app-country #country></app-country>
+<app-product #product></app-product>

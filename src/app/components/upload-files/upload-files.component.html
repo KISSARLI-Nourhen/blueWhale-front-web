@@ -1,0 +1,92 @@
+<html>
+  <h1> Charger les données dans la base de données Blue Whale</h1>
+  <hr>
+
+  <div class ="container">
+    <div class="selectFile">
+      <label class="btn btn-default">
+        <input type="file" (change)="selectFile($event)" />
+      </label>
+
+      <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">
+        télécharger
+      </button>
+    </div>
+
+      <div class="selectSource">
+        <select name="sources" [(ngModel)]="Mysource" (change)="selectChange()" required>
+          <option [value]="item.id" *ngFor="let item of data">
+            {{item.name}}
+          </option>
+        </select>
+          <button class="btn btn-success" [disabled]="Mysource ==='0'"  (click)="uploadDB()">
+            charger BD
+          </button>
+      </div>
+    <div id="message" class="alert alert-light" role="alert">{{ message }}</div>
+    <div *ngIf="currentFile" class="progress">
+      <div
+        class="progress-bar progress-bar-info progress-bar-striped"
+        role="progressbar"
+        attr.aria-valuenow="{{ progress }}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [ngStyle]="{ width: progress + '%' }">
+        {{ progress }}%
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Liste des fichiers</div>
+      <ul
+        class="list-group list-group-flush"
+        *ngFor="let file of fileInfos | async">
+        <li class="list-group-item">
+          <a href="{{ file.url }}">{{file.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div class="container" id="main-container">
+    <div class="card">
+      <div class="card-header">Résultat du chargement de la DataBase</div>
+      <ul
+        class="list-group list-group-flush"
+        *ngFor="let file of fileOutPutData | async">
+        <li class="list-group-item">
+          <a href="{{ file.url }}">{{file.name}}</a>
+        </li>
+      </ul>
+    </div>
+    <h5> Données refusées</h5>
+    <table id="tabRefused" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>iso3</th>
+        <th>country</th>
+        <th>product</th>
+        <th>year</th>
+        <th>area harvested</th>
+        <th>yield</th>
+        <th>production</th>
+        <th>source</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let r of refusedData">
+        <td><span>{{r.iso3}}</span></td>
+        <td><span>{{r.country}}</span></td>
+        <td><span>{{r.product}}</span></td>
+        <td><span>{{r.year}}</span></td>
+        <td><span>{{r.area}}</span></td>
+        <td><span>{{r.yield}}</span></td>
+        <td><span>{{r.production}}</span></td>
+        <td><span>{{r.source}}</span></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</html>
