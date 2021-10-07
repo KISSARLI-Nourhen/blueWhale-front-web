@@ -16,10 +16,31 @@ export class UploadFilesComponent implements OnInit {
     message = '';
     fileInfos: Observable<any>;
     fileOutPutData: Observable<any>;
-   public refusedData;
+    var: Boolean = false;
+   public refusedFaostat;
+   public excel;
+   public refusedComtrade;
     title ="Chargement des données dans la Base de données SQL Blue Whale";
+    tmp : string;
+//dropDownText
+  Mysource = '0';
+  selectedValue: any;
+
+  data =[
+    {id:0, name: 'selectionner la source'},
+    {id:1, name: 'comtrade -csv-'},
+    {id:2, name: 'resourcetradeearth -excel-'},
+    {id:3, name: 'faostat -excel-'}
+  ];
 
   constructor(private uploadService: UploadFileService) { }
+
+   ngOnInit(): void {
+      this.fileInfos = this.uploadService.getFiles();
+      this.fileOutPutData = this.uploadService.getOutPutData();
+      this.getDataRefused();
+      this.tmp = "faostat";
+   }
 
   selectFile(event) {
     this.selectedFiles = event.target.files;
@@ -27,7 +48,6 @@ export class UploadFilesComponent implements OnInit {
 
   upload() {
     this.progress = 0;
-
     this.currentFile = this.selectedFiles.item(0);
     this.uploadService.upload(this.currentFile).subscribe(
       event => {
@@ -47,58 +67,72 @@ export class UploadFilesComponent implements OnInit {
     this.selectedFiles = undefined;
   }
 
-  //dropDownText
-  Mysource = '0';
-  selectedValue: any;
-
-  data =[
-    {id:0, name: 'selectionner la source'},
-    {id:1, name: 'comtrade'},
-    {id:2, name: 'resourcetradeearth'},
-    {id:3, name: 'faostat'}
-  ];
-
-  ngOnInit(): void {
-    this.fileInfos = this.uploadService.getFiles();
-    this.fileOutPutData = this.uploadService.getOutPutData();
-    this.getRefusedData();
-  }
-
   selectChange(){
     this.selectedValue = this.uploadService.getDropDownText(this.Mysource, this.data)[0].name;
+
   }
 
   //charger la DB
   uploadDB() {
-
-
       this.uploadService.uploadDB(this.currentFile, this.selectedValue).subscribe(
-        event => {
-             if (event.type === HttpEventType.UploadProgress) {
-                  this.progress = Math.round(100 * event.loaded / event.total);
-             } else if (event instanceof HttpResponse) {
-            this.message = event.body.message;
-            this.fileInfos = this.uploadService.getFiles();
-            this.fileOutPutData = this.uploadService.getOutPutData();
-            this.getRefusedData();
-          }
-        },
-        err => {
-          this.message = 'Could not charge the DataBase ! Your file is not a valid document!';
-          this.currentFile = undefined;
-        });
-
+      event => {
+           if (event.type === HttpEventType.UploadProgress) {
+                this.progress = Math.round(100 * event.loaded / event.total);
+           } else if (event instanceof HttpResponse) {
+          this.message = event.body.message;
+          this.fileInfos = this.uploadService.getFiles();
+          this.fileOutPutData = this.uploadService.getOutPutData();
+          this.getDataRefused();
+        }
+      },
+      err => {
+        this.message = 'Could not charge the DataBase ! Your file is not a valid document!';
+        this.currentFile = undefined;
+      });
       this.selectedFiles = undefined;
-    }
+  }
 
-    public getRefusedData(){
+  public getRefusedFaostat(filename: string){
+    this.uploadService.getRefusedFaostat(filename).subscribe(data=>{
+      this.refusedFaostat = data ;
+      console.log(this.refusedFaostat);
+    }, err=>{
+      console.log("erreur de chargement");
+    });
+  }
 
-      this.uploadService.getRefusedData().subscribe(data=>{
-        this.refusedData = data;
-        console.log(this.refusedData);
+  public getRefusedExcel(){
+      this.uploadService.getRefusedExcel().subscribe(data=>{
+        this.excel = data;
+        console.log(this.excel);
       }, err=>{
         console.log("erreur de chargement");
       });
+  }
+
+  public getRefusedComtrade(){
+      this.uploadService.getRefusedComtrade().subscribe(data=>{
+        this.refusedComtrade = data ;
+        console.log(this.refusedComtrade);
+      }, err=>{
+        console.log("erreur de chargement");
+      });
+  }
+
+  public getDataRefused(){
+    if(this.selectedValue == "resourcetradeearth"){
+      this.getRefusedExcel();
     }
+    else if(this.selectedValue == "faostat"){
+       let filename= "faostat_DataRefused.csv";
+       this.getRefusedFaostat(filename);
+    }
+    else if(this.selectedValue == "comtrade"){
+     this.getRefusedComtrade();
+    }
+  }
+  onChange($event){
+   this.tmp = $event.target.options[$event.target.options.selectedIndex].text;
+  }
 
 }

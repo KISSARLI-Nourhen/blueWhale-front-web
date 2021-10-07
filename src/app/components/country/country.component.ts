@@ -7,8 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgForm }   from '@angular/forms';
 import {Observable} from 'rxjs';
 
-
-
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
@@ -28,11 +26,9 @@ export class CountryComponent implements OnInit {
 
   //country component
       public getCountries(): void{
-        this.tableReferenceService.getCountries()
-            .subscribe(data=>{
+        this.tableReferenceService.getCountries().subscribe(data=>{
             this.countries=data;
              console.log(this.countries);
-              console.log("recuperation ok");
             }, err=>{
             console.log("erreur de chargement")
             })
@@ -43,13 +39,15 @@ export class CountryComponent implements OnInit {
         this.tableReferenceService.addCountry(addForm.value).subscribe(
         response=>{
           this.getCountries();
+          console.log(addForm);
+          console.log(addForm.value);
           addForm.reset();
         },
         (error)=>{
           console.log("erreur chargement");
           addForm.reset();
         })
-       }
+      }
 
       public updateCountry(country: Country) {
          document.getElementById('update-country-form').click();
@@ -58,8 +56,7 @@ export class CountryComponent implements OnInit {
            }, err=>{
             console.log("erreur chargement");
            })
-        }
-
+      }
 
      public  deleteCountry(countryId: number): void{
       document.getElementById('delete-country-form').click();
@@ -69,14 +66,14 @@ export class CountryComponent implements OnInit {
          },
          (error)=>{
            console.log("erreur chargement");
-         })
+         });
         }
+
     //methode for get country thant we want to update and delete
     public getCountryClicked(country: Country){
-        this.editCountry=country;
-        this.delCountry=country;
-      }
-
+        this.editCountry = country;
+        this.delCountry = country;
+    }
 
     public onSearchCountry(key: string): void{
           const results: Country[] =[];
@@ -90,7 +87,7 @@ export class CountryComponent implements OnInit {
           if(results.length === 0 || !key){
             this.getCountries();
           }
-        }
+    }
 
 
 

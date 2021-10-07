@@ -13,52 +13,54 @@ export class UploadFileService {
 
   constructor(private http:HttpClient) { }
 
-   upload(file: File): Observable<HttpEvent<any>> {
+   public upload(file: File): Observable<HttpEvent<any>> {
       const formData: FormData = new FormData();
-
       formData.append('file', file);
-
       const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {
         reportProgress: true,
         responseType: 'json'
       });
-
       return this.http.request(req);
-    }
+   }
 
-    getFiles(): Observable<any> {
-        return this.http.get(`${this.baseUrl}/files`);
-    }
+   public  getFiles(): Observable<any> {
+      return this.http.get(`${this.baseUrl}/files`);
+   }
 
-    getOutPutData(): Observable<any> {
-            return this.http.get(`${this.baseUrl}/files/outputData`);
-        }
+  public getOutPutData(): Observable<any> {
+      return this.http.get(`${this.baseUrl}/files/outputData`);
+  }
 
-    //getDropDownText
-    getDropDownText(id, object){
+  //getDropDownText
+  public  getDropDownText(id, object){
       const selObj = _.filter(object, function (o) {
               return (_.includes(id,o.id));
-          });
-          return selObj;
-    }
+      });
+      return selObj;
+  }
 
-    //charge DB with differents source
-    uploadDB(file: File, sourceName: String): Observable<HttpEvent<any>> {
-          const formData: FormData = new FormData();
+  //charge DB with differents source
+   public uploadDB(file: File, sourceName: String): Observable<HttpEvent<any>> {
+      const formData: FormData = new FormData();
+      formData.append('file', file);
+      const req = new HttpRequest('POST', `${this.baseUrl}/upload/`+sourceName, formData, {
+        reportProgress: true,
+        responseType: 'json'
+      });
+     return this.http.request(req);
+   }
 
-          formData.append('file', file);
+  //fonction pour afficher les données refusés de la source faostat
+   public getRefusedFaostat(filename: string) : Observable<any>{
+     return this.http.get(`${this.baseUrl}/readCsv/`+filename);
+   }
 
-          const req = new HttpRequest('POST', `${this.baseUrl}/upload/`+sourceName, formData, {
-            reportProgress: true,
-            responseType: 'json'
-          });
+   public getRefusedComtrade() : Observable<any>{
+       return this.http.get(`${this.baseUrl}/readCsvAfterMerge`);
+   }
 
-          return this.http.request(req);
-        }
-
-    //fonction pour afficher les données refusés de la source faostat
-    public getRefusedData() : Observable<any>{
-       return this.http.get(`${this.baseUrl}/readOutPutData`);
-    }
+   public getRefusedExcel() : Observable<any>{
+       return this.http.get(`${this.baseUrl}/readExcel`);
+   }
 
 }

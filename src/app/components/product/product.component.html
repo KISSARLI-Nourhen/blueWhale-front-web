@@ -1,1 +1,136 @@
-<p>product works!</p>
+
+<!--Product table-->
+<div class="container" id="main-container" *ngIf="products">
+  <div class="border">
+    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#AddProductModal">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ajouter un produit
+    </button>
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchProduct(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Product code</th>
+        <th>Product name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" >
+        <td><span>{{product.product_iso}}</span></td>
+        <td><span>{{product.product_name}}</span></td>
+        <td>
+          <div>
+            <button (click)="getProductClicked(product)" type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#updateProductModal">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+            </button>
+            <button (click)="getProductClicked(product)" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteProductModal">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- add product modal-->
+<div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="AddProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AddProductModalLabel">Add Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="addProduct(f)">
+          <div class="form-group">
+            <label for="product_iso">Product code</label>
+            <input class="form-control" id="product_iso"
+                   type="text" placeholder="product code" ngModel name="product_iso" required>
+          </div>
+          <div class="form-group">
+            <label for="product_name">Product name</label>
+            <input class="form-control" id="product_name" type="text" placeholder="product name" ngModel name="product_name" required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="add-product-form" data-dismiss="modal">Close</button>
+            <button [disabled]="f.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- update product modal-->
+<div class="modal fade" id="updateProductModal" tabindex="-1" role="dialog" aria-labelledby="updateProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateProductModalLabel">update Product {{editProduct?.product_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <input type="hidden" ngModel="{{editProduct?.product_id}}" name="product_id" class="form-control" id="id">
+          <div class="form-group">
+            <label for="EditProduct_iso">Product code</label>
+            <input id="EditProduct_iso" name="product_iso" ngModel="{{editProduct?.product_iso}}"
+                   type="text" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="EditProduct_name">Product name</label>
+            <input id="EditProduct_name" name="product_name" ngModel="{{editProduct?.product_name}}" type="text" class="form-control" required>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="update-product-form" data-dismiss="modal">Close</button>
+          <button (click)="updateProduct(editForm.value)" type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete modal-->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteProductModalLabel">Delete Product {{delProduct?.product_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete Product {{delProduct?.product_name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-product-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deleteProduct(delProduct?.product_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No product alerte -->
+<div *ngIf="products?.length ===0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alerte alerte-info" role="alerte">
+    <h4 class="alert-heading">No products !</h4>
+    <p>No products were found.</p>
+  </div>
+</div>

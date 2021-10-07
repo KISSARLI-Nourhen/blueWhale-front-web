@@ -1,20 +1,37 @@
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Blue Whale</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li><a routerLink="uploadFile">Charger DataBase</a></li>
-      <li><a routerLink="/importExport">Import Export</a></li>
-      <li><a href="#">Production</a></li>
-      <li><a routerLink="/tableReference">Tables de références</a></li>
+<div id="app">
+  <nav class="navbar navbar-inverse">
+    <a href="#" class="navbar-brand">Blue Whale</a>
+
+    <ul class="nav navbar-nav" *ngIf="!isLoggedIn">
+
+      <li class="nav-item">
+        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a href="/login" class="nav-link" routerLink="login">Login</a>
+      </li>
     </ul>
 
-  </div>
-</nav>
-<router-outlet>
+    <ul class="nav navbar-nav" *ngIf="isLoggedIn">
+      <li><a routerLink="uploadFile">Charger DataBase</a></li>
+      <li><a routerLink="/importExport">Import Export</a></li>
+      <li><a routerLink="/faostats">Production</a></li>
+      <li><a routerLink="/tableReference">Tables de références</a></li>
+      <li *ngIf="showAdminBoard"><a routerLink="/admin">Admin</a></li>
 
-</router-outlet>
+      <li class="nav-item">
+        <a href="/profile" class="nav navbar-nav" routerLink="profile">{{ username }}</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">LogOut</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
 
 

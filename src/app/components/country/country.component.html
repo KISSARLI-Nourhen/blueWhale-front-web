@@ -1,16 +1,25 @@
 
 <!--Country table -->
 <div class="container" id="main-container" *ngIf="countries">
+
   <div class="border">
     <button onClick="$('#addCountryModal').modal()" class="btn btn-success">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
       Ajouter un pays
     </button>
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchCountry(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
   </div>
   <table class="table table-bordered table-striped">
     <thead>
     <tr>
-      <th>id</th>
+
       <th>iso2</th>
       <th>iso3</th>
       <th>country code</th>
@@ -20,7 +29,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let country of countries">
-      <td><span>{{country.country_id}}</span></td>
+
       <td><span>{{country.iso2}}</span></td>
       <td><span>{{country.iso3}}</span></td>
       <td><span>{{country.country_code}}</span></td>
@@ -150,7 +159,7 @@
 </div>
 
 <!-- Notification for no country -->
-<div *ngIf="countries?.length== 0" class=""col-lg-12 col-md-12 col-xl-12>
+<div *ngIf="countries?.length== 0" class="col-lg-12 col-md-12 col-xl-12">
   <div class="alert alert-info" role="alert">
     <h4 class="alert-heading">No Countries !</h4>
     <p>No Countries were found.</p>

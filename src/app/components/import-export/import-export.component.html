@@ -1,15 +1,64 @@
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
+ <div class="border">
+ </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr >
+        <th>Trade flow</th>
+        <th>Country exporter</th>
+        <th>Country importer</th>
+        <th>Product</th>
+        <th>Year</th>
+        <th>Months</th>
+        <th>Value</th>
+        <th>Unit value</th>
+        <th>Netweight</th>
+        <th>Unit netweight</th>
+        <th>Source</th>
+        <!--<th>Date de modification</th>-->
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let IE of Import_exports | paginate : {
+                  itemsPerPage: pageSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index
+        ">
+      <td><span>{{IE?.trade_flow}}</span></td>
+      <td><span>{{IE?.country_expo?.country_name}}</span></td>
+      <td><span>{{IE?.country_impo?.country_name}}</span></td>
+      <td><span>{{IE?.product?.product_name}}</span></td>
+      <td><span>{{IE?.years}}</span></td>
+      <td><span>{{IE?.months}}</span></td>
+      <td><span>{{IE?.value}}</span></td>
+      <td><span>{{IE?.unit_value}}</span></td>
+      <td><span>{{IE?.netweight}}</span></td>
+      <td><span>{{IE?.unit_netweight}}</span></td>
+      <td><span>{{IE?.source?.source_name}}</span></td>
+     <!-- <td><span>{{IE.date_modif}}</span></td>-->
+    </tr>
+    </tbody>
+  </table>
 
-     <!-- <ul *ngIf="importExports" class="list-group">
-        <li *ngFor="let IE of importsExports._embedded.import_exports" class="list-group-item">
-          {{IE.trade_flow}}
-        </li>
-      </ul>-->
-
-    </div>
+</div>
+<div class="block-main">
+  <div class="block1">
+    <pagination-controls
+      previouslabel="Prev"
+      nextLabel="Next"
+      [responsive]="true"
+      (pageChange)="handlePageChange($event)"
+    ></pagination-controls>
   </div>
-
+  <div class="block2">
+    éléments par page:
+    <select (change)="handlePageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
+  </div>
 </div>

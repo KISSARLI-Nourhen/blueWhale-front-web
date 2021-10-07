@@ -15,7 +15,7 @@
 
       <div class="selectSource">
         <select name="sources" [(ngModel)]="Mysource" (change)="selectChange()" required>
-          <option [value]="item.id" *ngFor="let item of data">
+          <option [value]="item.id" *ngFor="let item of data" [selected]="item.name === refusedFaostat">
             {{item.name}}
           </option>
         </select>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-header">Liste des fichiers</div>
+      <div class="card-header" >Liste des fichiers</div>
       <ul
         class="list-group list-group-flush"
         *ngFor="let file of fileInfos | async">
@@ -48,10 +48,9 @@
   </div>
 
 
-
-  <div class="container" id="main-container">
+  <div class="container" id="main-container" >
     <div class="card">
-      <div class="card-header">Résultat du chargement de la DataBase</div>
+      <div class="card-header" >Résultat du chargement de la DataBase</div>
       <ul
         class="list-group list-group-flush"
         *ngFor="let file of fileOutPutData | async">
@@ -60,8 +59,8 @@
         </li>
       </ul>
     </div>
-    <h5> Données refusées</h5>
-    <table id="tabRefused" class="table table-bordered table-striped">
+    <h5 *ngIf="refusedFaostat || refusedComtrade || excel"> Données refusées</h5>
+    <table id="tabRefused" class="table table-bordered table-striped" *ngIf="refusedFaostat">
       <thead>
       <tr>
         <th>iso3</th>
@@ -74,8 +73,8 @@
         <th>source</th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let r of refusedData">
+      <tbody *ngIf="refusedFaostat">
+      <tr *ngFor="let r of refusedFaostat">
         <td><span>{{r.iso3}}</span></td>
         <td><span>{{r.country}}</span></td>
         <td><span>{{r.product}}</span></td>
@@ -84,6 +83,55 @@
         <td><span>{{r.yield}}</span></td>
         <td><span>{{r.production}}</span></td>
         <td><span>{{r.source}}</span></td>
+      </tr>
+      </tbody>
+    </table>
+    <table id="tabRefusedImport_export" class="table table-bordered table-striped" *ngIf="refusedComtrade || excel">
+      <thead>
+      <tr>
+        <th>Trade flow</th>
+        <th>country exporter</th>
+        <th>country importer</th>
+        <th>product</th>
+        <!--<th>variety</th>-->
+        <th>year</th>
+        <th>month</th>
+        <th>value</th>
+        <th>unit value</th>
+        <th>netweight</th>
+        <th>unit netweight</th>
+        <th>source</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let e of excel">
+        <td><span>{{e.tradeflow}}</span></td>
+        <td><span>{{e.country_expo}}</span></td>
+        <td><span>{{e.country_impo}}</span></td>
+        <td><span>{{e.product}}</span></td>
+       <!-- <td><span>{{e.variety}}</span></td>-->
+        <td><span>{{e.years}}</span></td>
+        <td><span>{{e.months}}</span></td>
+        <td><span>{{e.value}}</span></td>
+        <td><span>{{e.unit_value}}</span></td>
+        <td><span>{{e.netweight}}</span></td>
+        <td><span>{{e.unit_netweight}}</span></td>
+        <td><span>{{e.source}}</span></td>
+      </tr>
+      </tbody>
+      <tbody>
+      <tr *ngFor="let comtrade of refusedComtrade">
+        <td><span>{{comtrade.tradeflow}}</span></td>
+        <td><span>{{comtrade.country_expo}}</span></td>
+        <td><span>{{comtrade.country_impo}}</span></td>
+        <td><span>{{comtrade.product}}</span></td>
+        <td><span>{{comtrade.years}}</span></td>
+        <td><span>{{comtrade.months}}</span></td>
+        <td><span>{{comtrade.value}}</span></td>
+        <td><span>{{comtrade.unit_value}}</span></td>
+        <td><span>{{comtrade.netweight}}</span></td>
+        <td><span>{{comtrade.unit_netweight}}</span></td>
+        <td><span>{{comtrade.source}}</span></td>
       </tr>
       </tbody>
     </table>
