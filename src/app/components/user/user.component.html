@@ -1,0 +1,255 @@
+
+<!--table user Modal -->
+<div id="main-container" *ngIf="users">
+
+  <div class="border">
+    <button onClick="$('#addUserModal').modal()" class="btn btn-success">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add user</button>
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchUser(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>prénom</th>
+      <th>nom</th>
+      <th>email</th>
+      <th>department</th>
+      <th>roles</th>
+      <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td><span>{{user?.first_name}}</span></td>
+      <td><span>{{user?.last_name}}</span></td>
+      <td><span>{{user?.email}}</span></td>
+      <td><span>{{user?.department?.department_name}}</span></td>
+      <td ><span *ngFor="let r of user.role"> {{ r?.name }}, </span></td>
+      <td>
+        <div>
+          <button onClick="$('#updateUserModal').modal()"  (click)="getUserClicked(user)" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateUserModal">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</button>
+          <button onClick="$('#deleteUserModal').modal()" (click)="getUserClicked(user)" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true" ></span> Delete</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!--add user Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          *ngIf="!isSuccessful"
+          name="form"
+          (ngSubmit)="f.form.valid && addUser()" #f="ngForm" novalidate>
+          <div class="form-group">
+            <label for="last_name">Nom</label>
+            <input
+              type="text"
+              class="form-control"
+              name="last_name"
+              [(ngModel)]="form.last_name"
+              required
+              minlength="3"
+              maxlength="20"
+              #last_name="ngModel"
+            />
+            <div class="alert-danger" *ngIf="last_name.errors && f.submitted">
+              <div *ngIf="last_name.errors.required">last_name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="first_name">Prénom</label>
+            <input
+              type="text"
+              class="form-control"
+              name="first_name"
+              [(ngModel)]="form.first_name"
+              required
+              minlength="3"
+              maxlength="20"
+              #first_name="ngModel"
+            />
+            <div class="alert-danger" *ngIf="first_name.errors && f.submitted">
+              <div *ngIf="first_name.errors.required">last_name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              [(ngModel)]="form.email"
+              required
+              email
+              #email="ngModel"
+            />
+            <div class="alert-danger" *ngIf="email.errors && f.submitted">
+              <div *ngIf="email.errors.required">Email is required</div>
+              <div *ngIf="email.errors.email">
+                Email must be a valid email address
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="passwords">Mot de passe</label>
+            <input
+              type="password"
+              class="form-control"
+              name="passwords"
+              [(ngModel)]="form.passwords"
+              required
+              minlength="6"
+              #passwords="ngModel"/>
+            <div class="alert-danger" *ngIf="passwords.errors && f.submitted">
+              <div *ngIf="passwords.errors.required">Password is required</div>
+              <div *ngIf="passwords.errors.minlength">
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="department">Departement</label>
+            <select  id="department" class="form-control" name="department" [(ngModel)]="form.department" required #department="ngModel">
+              <option *ngFor="let department of departments" [ngValue]="department">{{department?.department_name}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="department.errors && f.submitted">
+              <div *ngIf="department.errors.required">department is required</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+          <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+            Signup failed!<br />{{ errorMessage }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--edit user Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateUserModalLabel">Edit User {{editUser?.first_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm" >
+          <input type="hidden" ngModel="{{editUser?.user_id}}" name="user_id" class="form-control" id="user_id">
+          <div class="form-group">
+            <label for="EditFirst_name">Prénom</label>
+            <input type="text" ngModel="{{editUser?.first_name}}" name="first_name"
+                   class="form-control" id="EditFirst_name" placeholder="Prénom" required>
+          </div>
+          <div class="form-group">
+            <label for="EditLast_name">Nom</label>
+            <input type="text" ngModel="{{editUser?.last_name}}" name="last_name"
+                   class="form-control" id="EditLast_name" placeholder="Nom" required>
+          </div>
+          <div class="form-group">
+            <label for="EditEmail">Email</label>
+            <input type="email" ngModel="{{editUser?.email}}" name="email"
+                   class="form-control" id="EditEmail" placeholder="email" required email #email="ngModel">
+            <div class="alert-danger" *ngIf="email.errors">
+              <div *ngIf="email.errors.required">Email is required</div>
+              <div *ngIf="email.errors.email"> Email must be a valid email address</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="passwords">Mot de passe</label>
+            <input type="password" class="form-control" name="passwords" ngModel="{{editUser?.passwords}}" required minlength="6" #passwords="ngModel" />
+            <div class="alert-danger" *ngIf="passwords.errors">
+              <div *ngIf="passwords.errors.required">Password is required</div>
+              <div *ngIf="passwords.errors.minlength">
+                Password must be at least 6 characters
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select  id="Editrole" class="form-control" name="role" ngModel required #role="ngModel" >
+              <option *ngFor="let role of roles" [ngValue]="role">{{role[0]?.name}}</option>
+              <option *ngFor="let role of roles" [ngValue]="role">{{role[1]?.name}}</option>
+              <option *ngFor="let role of roles" [ngValue]="role">{{role[2]?.name}}</option>
+            </select>
+            <!--<input type="text" class="form-control" name="role[]" ngModel="{{editUser?.role?.name}}" required minlength="6" #role="ngModel"/>-->
+            <div class="alert-danger" *ngIf="role.errors">
+              <div *ngIf="role.errors.required">role is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="department">Departement</label>
+            <select  id="Editdepartment" class="form-control" name="department" ngModel required #department="ngModel">
+              <option *ngFor="let department of departments" [ngValue]="department">{{department?.department_name}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="department.errors">
+              <div *ngIf="department.errors.required">department is required</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="update-user-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button (click)="updateUser(editForm.value)" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--delete user translation Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteUserModalLabel">Delete User {{delUser?.first_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete user {{delUser?.first_name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-user-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deleteUser(delUser?.user_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no translation -->
+<div *ngIf="users?.length== 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Users !</h4>
+    <p>No User were found.</p>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+
+
+<!-- Country translation table -->
+<div class="container" *ngIf="country_translations">
+  <div class="border">
+    <button class="btn btn-success" data-toggle="modal" data-target="#addCTModal">
+      <span class="glyphicon glyphicon-plus"></span> Traduire un pays
+    </button>
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchCT(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>Country</th>
+      <th>Language</th>
+      <th>Translation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let c of country_projection">
+      <td><span>{{c.country.country_name}}</span></td>
+      <td><span>{{c.world_language.langen}}</span></td>
+      <td><span>{{c.translation}}</span></td>
+      <td>
+        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editCTModal" (click)="onGetClickedCT(c)">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+        </button>
+        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCTModal" (click)="onGetClickedCT(c)">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- add Country translation modal-->
+<div class="modal fade" id="addCTModal" tabindex="-1" role="dialog" aria-labelledby="addCTModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCTModalLabel">Ajouter une traduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" (ngSubmit)="addCT(form)">
+          <div class="form-group">
+            <label for="addTrans">Translation</label>
+            <input id="addTrans" class="form-control" type="text" ngModel name="translation" placeholder="Translation" required>
+          </div>
+          <div class="form-group">
+            <label for="addCountry">Country</label>
+            <!--<input id="addProd" class="form-control" type="text" ngModel name="product.product_id" placeholder="product name" required>-->
+            <select  id="addCountry" class="form-control" name="country" ngModel required>
+              <option *ngFor="let c of countries" [ngValue]="c">{{c.country_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="addLang">Language</label>
+            <!--<input id="addLang" class="form-control" type="text" ngModel name="language.alpha2" placeholder="Language" required>-->
+            <select id="addLang" class="form-control" name="world_language" ngModel required>
+              <option *ngFor="let l of languages" [ngValue]="l">{{l.langen}}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-PT-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update Country translation modal-->
+<div class="modal fade" id="editCTModal" tabindex="-1" role="dialog" aria-labelledby="editCTModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCTModalLabel">Modifier une traduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateform="ngForm" (ngSubmit)="updateCT(updateform)" >
+          <input type="hidden" ngModel="{{editCT?.country_translation_id}}" name="country_translation_id" class="form-control" id="id">
+          <div class="form-group">
+            <label for="editTrans">Translation</label>
+            <input id="editTrans" class="form-control" type="text" ngModel="{{editCT?.translation}}" name="translation" placeholder="Translation" required>
+          </div>
+          <div class="form-group">
+            <label for="editProd">Country</label>
+            <!--<input id="addProd" class="form-control" type="text" ngModel name="product.product_id" placeholder="product name" required>-->
+            <select id="editProd" class="form-control" name="country" ngModel>
+              <option *ngFor="let c of countries" [ngValue]="c">{{c?.country_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editLang">Language</label>
+            <!--<input id="addLang" class="form-control" type="text" ngModel name="language.alpha2" placeholder="Language" required>-->
+            <select id="editLang" class="form-control" name="world_language"  ngModel>
+              <option *ngFor="let l of languages" [ngValue]="l">{{l?.langen}}</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="edit-PT-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateform.invalid" type="submit" class="btn btn-primary" (click)="deleteCT(editCT?.country_translation_id)">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--delete Country translation Modal -->
+<div class="modal fade" id="deleteCTModal" tabindex="-1" role="dialog" aria-labelledby="deleteCTModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCTModalLabel">Delete Translation {{delCT?.country.country_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete translation {{delCT?.country.country_name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-PT-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deleteCT(delCT?.country_translation_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no translation -->
+<div *ngIf="country_translations?.length== 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Translations !</h4>
+    <p>No Translation were found.</p>
+  </div>
+</div>

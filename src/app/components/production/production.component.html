@@ -1,0 +1,65 @@
+
+
+
+
+<div class="container">
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr >
+      <th>country</th>
+      <th>product</th>
+      <th>year</th>
+      <th>area harvested</th>
+      <th>Unit area</th>
+      <th>yield</th>
+      <th>Unit yield</th>
+      <th>production</th>
+      <th>Unit production</th>
+      <th>source</th>
+      <!--<th>Date de modification</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let faostat of faostats | paginate : {
+                  itemsPerPage: pageSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index
+        ">
+      <td><span>{{faostat?.country?.country_name}}</span></td>
+      <td><span>{{faostat?.product?.product_name}}</span></td>
+      <td><span>{{faostat?.year}}</span></td>
+      <td><span>{{faostat?.area_harvested}}</span></td>
+      <td><span>{{faostat?.unit_area}}</span></td>
+      <td><span>{{faostat?.yield}}</span></td>
+      <td><span>{{faostat?.unit_yield}}</span></td>
+      <td><span>{{faostat?.production}}</span></td>
+      <td><span>{{faostat?.unit_production}}</span></td>
+      <td><span>{{faostat?.source?.source_name}}</span></td>
+     <!-- <td><span>{{faostat?.date_modif}}</span></td>-->
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="block-main">
+<div class="block1">
+  <pagination-controls
+    previouslabel="Prev"
+    nextLabel="Next"
+    [responsive]="true"
+    (pageChange)="handlePageChange($event)"
+  ></pagination-controls>
+</div>
+<div class="block2">
+  éléments par page:
+  <select (change)="handlePageSizeChange($event)">
+    <option *ngFor="let size of pageSizes" [ngValue]="size">
+      {{ size }}
+    </option>
+  </select>
+</div>
+</div>
+
+
+

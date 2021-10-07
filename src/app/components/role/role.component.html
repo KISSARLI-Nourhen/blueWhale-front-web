@@ -1,0 +1,127 @@
+
+<!--table role Modal -->
+<div id="main-container" *ngIf="roles">
+
+  <div class="border">
+    <!--<button onClick="$('#addRoleModal').modal()" class="btn btn-success">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add role</button>-->
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchRole(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+
+      <th>role name</th>
+      <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let role of roles">
+      <td><span>{{role?.name}}</span></td>
+      <td>
+        <div>
+          <button onClick="$('#updateRoleModal').modal()"  (click)="getRoleClicked(role)" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateRoleModal">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</button>
+          <button onClick="$('#deleteRoleModal').modal()" (click)="getRoleClicked(role)" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRoleModal">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true" ></span> Delete</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--add role Modal -->
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addRoleModalLabel">Add Role</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="addRole(addForm)">
+          <div class="form-group">
+            <label for="role_name">role</label>
+            <input type="text" ngModel name="name"
+                   class="form-control" id="role_name" placeholder="role" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-role-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--edit role Modal -->
+<div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateRoleModalLabel">Edit Role {{editRole?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm" >
+          <input type="hidden" ngModel="{{editRole?.role_id}}" name="role_id" class="form-control" id="role_id">
+          <div class="form-group">
+            <label for="EditRole_name">Role</label>
+            <input type="text" ngModel="{{editRole?.name}}" name="name"
+                   class="form-control" id="EditRole_name" placeholder="Role" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  id="update-role-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button (click)="updateRole(editForm.value)" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--delete role translation Modal -->
+<div class="modal fade" id="deleteRoleModal" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteRoleModalLabel">Delete Role {{delRole?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete role {{delRole?.name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-role-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deleteRole(delRole?.role_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no role -->
+<div *ngIf="roles?.length== 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Roles !</h4>
+    <p>No Role were found.</p>
+  </div>
+</div>
+

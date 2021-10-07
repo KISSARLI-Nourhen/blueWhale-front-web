@@ -1,0 +1,156 @@
+
+<!-- Product translation table -->
+<div class="container" *ngIf="product_translations">
+  <div class="border">
+    <button class="btn btn-success" data-toggle="modal" data-target="#addPTModal">
+      <span class="glyphicon glyphicon-plus"></span> Traduire un produit
+    </button>
+    <div>
+      <form>
+        <div class="form-group" class="navbar navbar-nav ml-auto">
+          <input type="search" (ngModelChange)="onSearchPT(key.value)" #key="ngModel" ngModel
+                 name="key" class="form-control"  placeholder="Search..." >
+        </div>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Language</th>
+        <th>Translation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prod of product_trans">
+        <td><span>{{prod.product.product_name}}</span></td>
+        <td><span>{{prod.world_language.langen}}</span></td>
+        <td><span>{{prod.translation}}</span></td>
+        <td>
+          <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editPTModal" (click)="onGetClickedPT(prod)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+          </button>
+          <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePTModal" (click)="onGetClickedPT(prod)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- add product translation modal-->
+<div class="modal fade" id="addPTModal" tabindex="-1" role="dialog" aria-labelledby="addPTModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPTModalLabel">Ajouter une traduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm" (ngSubmit)="addPT(form)">
+          <div class="form-group">
+            <label for="addTrans">Translation</label>
+            <input id="addTrans" class="form-control" type="text" ngModel name="translation" placeholder="Translation" required>
+          </div>
+          <div class="form-group">
+            <label for="addProd">Product</label>
+            <!--<input id="addProd" class="form-control" type="text" ngModel name="product.product_id" placeholder="product name" required>-->
+            <select  id="addProd" class="form-control" name="product" ngModel>
+              <option *ngFor="let p of products" [ngValue]="p">{{p.product_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="addLang">Language</label>
+            <!--<input id="addLang" class="form-control" type="text" ngModel name="language.alpha2" placeholder="Language" required>-->
+            <select id="addLang" class="form-control" name="world_language" ngModel>
+              <option *ngFor="let l of languages" [ngValue]="l">{{l.langen}}</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="add-PT-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update product translation modal-->
+<div class="modal fade" id="editPTModal" tabindex="-1" role="dialog" aria-labelledby="editPTModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPTModalLabel">Modifier une traduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateform="ngForm" (ngSubmit)="updatePT(updateform)" >
+          <input type="hidden" ngModel="{{editPT?.product_translations_id}}" name="product_translations_id" class="form-control" id="id">
+          <div class="form-group">
+            <label for="editTrans">Translation</label>
+            <input id="editTrans" class="form-control" type="text" ngModel="{{editPT?.translation}}" name="translation" placeholder="Translation" required>
+          </div>
+          <div class="form-group">
+            <label for="editProd">Product</label>
+            <!--<input id="addProd" class="form-control" type="text" ngModel name="product.product_id" placeholder="product name" required>-->
+            <select id="editProd" class="form-control" name="product" ngModel>
+              <option *ngFor="let p of products" [ngValue]="p">{{p?.product_name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editLang">Language</label>
+            <!--<input id="addLang" class="form-control" type="text" ngModel name="language.alpha2" placeholder="Language" required>-->
+            <select id="editLang" class="form-control" name="world_language"  ngModel>
+              <option *ngFor="let l of languages" [ngValue]="l">{{l?.langen}}</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="edit-PT-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateform.invalid" type="submit" class="btn btn-primary" >Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--delete product translation Modal -->
+<div class="modal fade" id="deletePTModal" tabindex="-1" role="dialog" aria-labelledby="deletePTModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePTModalLabel">Delete Translation {{delPT?.product.product_name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>Are you sure you want to delete translation {{delPT?.product.product_name}} ?</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-PT-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="deletePT(delPT?.product_translations_id)" type="button" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no translation -->
+<div *ngIf="product_translations?.length== 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Translations !</h4>
+    <p>No Translation were found.</p>
+  </div>
+</div>

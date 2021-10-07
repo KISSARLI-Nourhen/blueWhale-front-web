@@ -1,0 +1,19 @@
+
+<div class="container">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <ul class="navbar navbar-nav">
+        <button id="btnUser" class="btn btn-outline-info" (click)="reset()" (click)="getChild($event)">User</button>
+        <button id="btnDepartment" class="btn btn-outline-info" (click)="reset()" (click)="getChild($event)">Department</button>
+        <button id="btnRole" class="btn btn-outline-info" (click)="reset()" (click)="getChild($event)">Role</button>
+      </ul>
+    </nav>
+  </header>
+</div>
+
+<div id="container-child">
+  <app-user *ngIf="showUser"></app-user>
+  <app-department *ngIf="showDepartment"></app-department>
+  <app-role *ngIf="showRole"></app-role>
+</div>
+
