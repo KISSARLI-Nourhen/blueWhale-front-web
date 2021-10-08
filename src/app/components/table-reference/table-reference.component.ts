@@ -29,10 +29,10 @@ export class TableReferenceComponent implements OnInit {
 @ViewChild(ProductTranslationComponent) productTranslationChild: ProductTranslationComponent;
 @ViewChild(CountryTranslationComponent) countryTranslationChild: CountryTranslationComponent;
 
-   showChild1: boolean=true;
-   showChild2: boolean=true;
-   showChild3: boolean=true;
-   showChild4: boolean=true;
+   showCountry: boolean=true;
+   showProduct: boolean=true;
+   showSource: boolean=true;
+   showPT: boolean=true;
    showChild5: boolean=true;
 
   constructor(private tableReferenceService:TableReferenceService) { }
@@ -42,10 +42,10 @@ export class TableReferenceComponent implements OnInit {
   }
 
   public reset(){
-    this.showChild1=true;
-    this.showChild2=true;
-    this.showChild3=true;
-    this.showChild4=true;
+    this.showCountry=true;
+    this.showProduct=true;
+    this.showSource=true;
+    this.showPT=true;
     this.showChild5=true;
   }
 
@@ -69,49 +69,49 @@ export class TableReferenceComponent implements OnInit {
 
 
   public getCountriesChild(): void{
-     this.showChild1 =true;
-     this.showChild2 =false;
-     this.showChild3 =false;
-     this.showChild4 =false;
-     this.showChild5 = false
+     this.showCountry =true;
+     this.showProduct =false;
+     this.showSource =false;
+     this.showPT =false;
+     this.showCT = false
      this.countryChild.getCountries();
 
   }
 
   public getProductsChild(): void{
-     this.showChild2 = true;
-     this.showChild1 = false;
-     this.showChild3 = false;
-     this.showChild4 =false;
-     this.showChild5 = false
+     this.showProduct = true;
+     this.showCountry = false;
+     this.showSource = false;
+     this.showPT =false;
+     this.showCT = false
      this.productChild.getProducts();
 
   }
 
   public getSourcesChild(): void {
-      this.showChild1 = false;
-      this.showChild2 = false;
-      this.showChild3 = true;
-      this.showChild4 =false;
-      this.showChild5 = false
+      this.showCountry = false;
+      this.showProduct = false;
+      this.showSource = true;
+      this.showPT =false;
+      this.showCT = false
      this.sourceChild.getSources();
   }
 
   public getProductTranslationChild(): void {
-      this.showChild1 = false;
-      this.showChild2 = false;
-      this.showChild3 = false;
-      this.showChild4 = true;
-      this.showChild5 = false
+      this.showCountry = false;
+      this.showProduct = false;
+      this.showSource = false;
+      this.showPT = true;
+      this.showCT = false
     this.productTranslationChild.getProductTranslations();
   }
 
   public getCountryTranslationChild(): void {
-        this.showChild1 = false;
-        this.showChild2 = false;
-        this.showChild3 = false;
-        this.showChild4 = false;
-        this.showChild5 = true
+        this.showCountry = false;
+        this.showProduct = false;
+        this.showSource = false;
+        this.showPT = false;
+        this.showCT = true
       this.countryTranslationChild.getCountryTranslations();
   }
 

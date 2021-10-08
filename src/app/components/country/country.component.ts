@@ -90,26 +90,4 @@ export class CountryComponent implements OnInit {
     }
 
 
-
-    /*public onOpenModal(country: Country, mode: string): void{
-      const container = document.getElementById('main-container');
-      const button =document.createElement('button');
-      button.type ='button';
-      button.style.display = 'non';
-      button.setAttribute('data-bs-toggle', 'modal');
-
-      if(mode === 'add'){
-        button.setAttribute('data-bs-target', '#addCountryModal');
-      }
-      if(mode === 'edit'){
-            button.setAttribute('data-bs-target', '#updateCountryModal');
-      }
-      if(mode === 'delete'){
-            button.setAttribute('data-bs-target', '#deleteCountryModal');
-      }
-      container.appendChild(button);
-      button.click();
-    }*/
-
-
 }

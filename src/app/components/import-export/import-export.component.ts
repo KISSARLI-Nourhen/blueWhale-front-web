@@ -33,24 +33,6 @@ export class ImportExportComponent implements OnInit {
     this.retrieveIE();
   }
 
-  /*public getImport_export() : void{
-    this.importExportService.getImport_export().subscribe(data=>{
-      this.importsExports = data;
-      this.importsExports._embedded.import_exports.forEach(IE =>{
-        this.importExportService.getProjectionImport_export(IE).subscribe(
-        d=>{
-          this.projectionIE.push(d);
-        }, error =>{
-          console.log("erreur de projection");
-        });
-      })
-      console.log("projection import export");
-      console.log(this.projectionIE);
-    },
-    error=>{
-      console.log("erreur de chargement");
-    });
-  }*/
 
   public getImport_export(): void {
       this.importExportService.getImport_export().subscribe(data=>{

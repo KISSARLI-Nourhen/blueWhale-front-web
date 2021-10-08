@@ -8,28 +8,14 @@
       <button id="btnSource" class="btn btn-outline-info" (click)="reset()" (click)="getChild($event)">Source</button>
 
   </ul>
- <!-- <ul class="navbar navbar-nav ml-auto">
-    <div>
-      <form>
-        <div class="form-group">
-          <input type="search" (ngModelChange)="country.onSearchCountry(key.value)" #key="ngModel" ngModel
-                 name="key" class="form-control"  placeholder="Search..." >
-        </div>
-      </form>
-    </div>
-  </ul>-->
+
 </nav>
 <div id="container-child">
-  <app-country *ngIf="showChild1"></app-country>
-  <app-product *ngIf="showChild2"></app-product>
-  <app-source *ngIf="showChild3"></app-source>
-  <app-product-translation *ngIf="showChild4"></app-product-translation>
-  <app-country-translation *ngIf="showChild5"></app-country-translation>
+  <app-country *ngIf="showCountry"></app-country>
+  <app-product *ngIf="showProduct"></app-product>
+  <app-source *ngIf="showSource"></app-source>
+  <app-product-translation *ngIf="showPT"></app-product-translation>
+  <app-country-translation *ngIf="showCT"></app-country-translation>
 </div>
 
 
-
-
-
-<!--<child1 *ngIf="showChild1" (clickBtn)="showChild2 = $event; showChild1 = false" name="{{ name }}"></child1>
-<child2 *ngIf="showChild2" (clickBtn)="showChild1 = $event; showChild2 = false" name="{{ name }}"></child2>-->

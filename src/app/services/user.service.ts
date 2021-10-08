@@ -56,15 +56,6 @@ private baseUrl = environment.baseUrl;
     return this.http.put<User>(this.baseUrl+"/updateUser", user, httpOptions);
    }
 
-  /*public updateUser(first_name: string,last_name: string, passwords: string, email: string, department : Department): Observable<any>{
-     return this.http.put<User>(this.baseUrl+"/api/auth/update", {
-       first_name,
-       last_name,
-       passwords,
-       email,
-       department
-     }, httpOptions);
-  }*/
 
   public deleteUser(userId: number){
      return this.http.delete(this.baseUrl+"/deleteUser/"+userId);

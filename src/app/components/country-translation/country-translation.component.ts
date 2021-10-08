@@ -91,20 +91,6 @@ public selectedLangue: World_language;
       console.log(this.delCT);
   }
 
-   /* public createPT(form: NgForm): void {
-   // this.getProducts();
-       // this.getLanguages();
-        document.getElementById("add-PT-form").click();
-        console.log(form.value);
-        this.tableReferenceService.createPT(form.value).subscribe(data=>{
-          this.getProductTranslations();
-
-          form.reset();
-        }, error=>{
-          console.log("erreur le produit n'a pas été ajouté");
-        });
-      }*/
-
   public getCountries(): void{
     this.tableReferenceService.getCountries().subscribe(
       data=>{

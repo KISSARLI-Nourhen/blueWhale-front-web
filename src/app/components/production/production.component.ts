@@ -31,22 +31,6 @@ export class ProductionComponent implements OnInit {
     this.retrieveFaostats();
   }
 
-  /*public getFaostat() : void{
-    this.productionService.getFaostat().subscribe(data=>{
-      this.faostats.push(data) ;
-      this.faostats._embedded.faostats.forEach(faostat =>{
-        this.productionService.getProjectionFaostat(faostat).subscribe(data=>{
-          this.projectionFaostat.push(data);
-        }, error=>{
-          console.log("erreur projection faostat")
-        });
-      })
-      console.log("projection Faostat");
-      console.log(this.projectionFaostat);
-    }, error =>{
-      console.log("erreur de chargement");
-    });
-  }*/
 
   public getFaostat(): void {
     this.productionService.getFaostat().subscribe(data=>{
