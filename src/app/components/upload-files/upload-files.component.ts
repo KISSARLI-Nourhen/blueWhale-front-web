@@ -27,11 +27,12 @@ export class UploadFilesComponent implements OnInit {
   selectedValue: any;
 
   data =[
-    {id:0, name: 'selectionner la source'},
-    {id:1, name: 'comtrade -csv-'},
-    {id:2, name: 'resourcetradeearth -excel-'},
-    {id:3, name: 'faostat -excel-'}
+      {id:0, name: 'selectionner la source'},
+      {id:1, name: 'comtrade'},
+      {id:2, name: 'resourcetradeearth'},
+      {id:3, name: 'faostat'}
   ];
+
 
   constructor(private uploadService: UploadFileService) { }
 
@@ -60,7 +61,7 @@ export class UploadFilesComponent implements OnInit {
       },
       err => {
         this.progress = 0;
-        this.message = 'Could not upload the file!';
+        this.message = 'Could not upload the file (size)!';
         this.currentFile = undefined;
       });
 

@@ -59,7 +59,7 @@ const routes: Routes = [
     { path: 'user', component: BoardUserComponent },
     { path: 'mod', component: BoardModeratorComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
-     { path: '**', redirectTo: '' },
+
 
     {
         path: "admin",

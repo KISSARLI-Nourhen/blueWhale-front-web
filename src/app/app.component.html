@@ -14,14 +14,14 @@
     </ul>
 
     <ul class="nav navbar-nav" *ngIf="isLoggedIn">
-      <li><a routerLink="uploadFile">Charger DataBase</a></li>
+      <li><a routerLink="/uploadFile">Charger DataBase</a></li>
       <li><a routerLink="/importExport">Import Export</a></li>
       <li><a routerLink="/faostats">Production</a></li>
       <li><a routerLink="/tableReference">Tables de références</a></li>
       <li *ngIf="showAdminBoard"><a routerLink="/admin">Admin</a></li>
 
       <li class="nav-item">
-        <a href="/profile" class="nav navbar-nav" routerLink="profile">{{ username }}</a>
+        <a href="/profile" class="nav navbar-nav" routerLink="profile"> Profile </a>
       </li>
       <li class="nav-item">
         <a href class="nav-link" (click)="logout()">LogOut</a>
